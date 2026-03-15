@@ -25,12 +25,17 @@ def main():
                     current_chat = []
                     for message in conversation:
                         try:
-                            st.session_state["ID"] .append(message["ID"])
+                            st.session_state["ID"].append(message)
+                            for mono in conversation[list(conversation.keys())[0]]:
+                                role = mono["role"]
+                                texte = mono["content"]
+                                current_chat.append({f"{role}": f"{texte}"})
+                                st.session_state["ID"].append(list(conversation.keys())[0])
+                            
                         except KeyError:
                             pass
-                        role = message["role"].capitalize()
-                        texte = message["parts"][0]["text"]
-                        current_chat.append({f"{role}": f"{texte}"})
+                            
+
                     old_historic.append(current_chat)
                 for conv in old_historic:
                     response = client.messages.create(
